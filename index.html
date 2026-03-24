@@ -4,64 +4,100 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Induction Access Card</title>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
 <style>
 body { font-family: Arial; background:#f0f0f0; }
+
 .container { width:950px; margin:20px auto; display:flex; gap:20px; }
-.card, .guidelines { background:#fff; border:1px solid #ccc; padding:15px; }
-.card { width: 336px; height: 212px; margin:20px auto; border-radius:12px; overflow:hidden; box-shadow:0 4px 10px rgba(0,0,0,0.3); }
+
+.card, .guidelines { background:#fff; border:1px solid #ccc; padding:10px; }
+
+.card { width: 336px; height: 212px; border-radius:10px; overflow:hidden; }
+
 .guidelines { width:40%; }
-.header { display:flex; align-items:center; justify-content:center; gap:10px; background:#6a0dad; color:#fff; padding:10px; }
-.header img { height:40px; }
-.details { display:grid; grid-template-columns:1fr 1fr; margin-top:10px; }
-.details div { margin:5px 0; }
-.photo img { width:120px; height:120px; object-fit:cover; border:1px solid #000; }
-.sign { display:flex; justify-content:space-between; margin-top:20px; }
-.sign div { text-align:center; width:30%; }
-.line { border-top:1px solid #000; margin-top:30px; }
+
+.header {
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ gap:10px;
+ background:#6a0dad;
+ color:#fff;
+ padding:5px;
+ font-size:12px;
+}
+
+.header img { height:30px; }
+
+.details {
+ display:grid;
+ grid-template-columns:1fr 1fr;
+ font-size:11px;
+}
+
+.photo img {
+ width:80px;
+ height:80px;
+ object-fit:cover;
+ border:1px solid #000;
+}
+
+.sign {
+ display:flex;
+ justify-content:space-between;
+ margin-top:10px;
+ font-size:10px;
+}
+
+.line {
+ border-top:1px solid #000;
+ margin-top:15px;
+}
+
 input { width:95%; margin:5px 0; padding:5px; }
-button { margin-top:10px; padding:8px 12px; cursor:pointer; }
-#qrcode { margin-top:10px; }
+
+button { margin:5px; padding:8px 12px; cursor:pointer; }
+
 video { width:150px; border:1px solid #000; }
-canvas { display:none; }
 
 @media print {
  body { background:#fff; }
- .container { width:100%; display:block; }
+ .container { display:block; }
  .guidelines { display:none; }
  button, input, video { display:none; }
- .card { width: 85.6mm; height: 54mm; }
-}
- .container { width:100%; display:block; }
- .guidelines { page-break-after:always; }
- button, input, video { display:none; }
+ .card { width:85.6mm; height:54mm; }
 }
 </style>
 </head>
+
 <body>
 
 <div style="text-align:center;">
 <h2>Induction Access Card System</h2>
 
-<!-- Camera Section -->
 <video id="video" autoplay></video><br>
 <button onclick="startCamera()">Start Camera</button>
 <button onclick="capturePhoto()">Capture Photo</button>
-<canvas id="canvas"></canvas>
+
 <br>
 
 <input type="text" id="name" placeholder="Name">
 <input type="text" id="dept" placeholder="Department">
 <input type="text" id="code" placeholder="Employee Code">
 <input type="date" id="date">
+
 <br>
-<button onclick="generateCard()">Generate</button>
+
+<button onclick="generateCard()">Generate Card</button>
 <button onclick="printCard()">Print</button>
 </div>
 
 <div class="container" id="cardSection" style="display:none;">
 
-<div class="card" id="card">
+<div class="card">
+
 <div class="header">
 <img src="Campa_Cola_logo.png" onerror="this.style.display='none'">
 <div>
@@ -71,41 +107,39 @@ Induction Access Card
 </div>
 
 <div class="details">
-<div><b>Name:</b> <span id="cname"></span></div>
+<div>Name: <span id="cname"></span></div>
 <div class="photo"><img id="cphoto"></div>
-<div><b>Department:</b> <span id="cdept"></span></div>
-<div><b>Employee Code:</b> <span id="ccode"></span></div>
-<div><b>Induction Date:</b> <span id="cdate"></span></div>
-<div><b>Valid Till:</b> <span id="cvalid"></span></div>
+<div>Dept: <span id="cdept"></span></div>
+<div>Code: <span id="ccode"></span></div>
+<div>Induction: <span id="cdate"></span></div>
+<div>Valid: <span id="cvalid"></span></div>
 </div>
 
 <div id="qrcode"></div>
 
 <div class="sign">
-<div><div class="line"></div>Employee Sign</div>
-<div><div class="line"></div>Trainer Sign</div>
-<div><div class="line"></div>Safety Sign</div>
+<div><div class="line"></div>Emp</div>
+<div><div class="line"></div>Trainer</div>
+<div><div class="line"></div>Safety</div>
 </div>
 
 </div>
 
 <div class="guidelines">
-<h3>Safety and Security Guidelines</h3>
+<h3>Safety Guidelines</h3>
 <ol>
-<li>Follow all safety rules inside plant.</li>
-<li>Wear mandatory PPE at all times.</li>
-<li>Do not enter restricted areas.</li>
-<li>Report unsafe conditions immediately.</li>
-<li>Follow emergency evacuation procedure.</li>
-<li>Maintain cleanliness and hygiene.</li>
-<li>No smoking or spitting inside plant.</li>
-<li>Carry this card during duty hours.</li>
+<li>Wear PPE</li>
+<li>No restricted entry</li>
+<li>Report unsafe act</li>
+<li>No smoking</li>
+<li>Follow safety rules</li>
 </ol>
 </div>
 
 </div>
 
 <script>
+
 let capturedImage = "";
 
 function startCamera(){
@@ -117,65 +151,69 @@ function startCamera(){
 
 function capturePhoto(){
  let video = document.getElementById('video');
- let canvas = document.getElementById('canvas');
+ let canvas = document.createElement('canvas');
  let context = canvas.getContext('2d');
 
  canvas.width = video.videoWidth;
  canvas.height = video.videoHeight;
  context.drawImage(video, 0, 0);
 
- // Save image
  capturedImage = canvas.toDataURL('image/png');
 
- // Show captured image preview
- document.getElementById('cphoto').src = capturedImage;
-
- // Stop camera
+ // stop camera
  let stream = video.srcObject;
  if(stream){
-   let tracks
+   let tracks = stream.getTracks();
+   tracks.forEach(track => track.stop());
+ }
+ video.srcObject = null;
+
+ alert("Photo Captured");
+}
 
 function generateCard(){
- let name=document.getElementById('name').value;
- let dept=document.getElementById('dept').value;
- let code=document.getElementById('code').value;
- let date=document.getElementById('date').value;
 
- let validity=new Date(date);
- validity.setFullYear(validity.getFullYear()+1);
+ let name = document.getElementById('name').value;
+ let dept = document.getElementById('dept').value;
+ let code = document.getElementById('code').value;
+ let date = document.getElementById('date').value;
 
  let d = new Date(date);
  let day = String(d.getDate()).padStart(2,'0');
  let month = String(d.getMonth()+1).padStart(2,'0');
  let year = d.getFullYear();
 
+ let validity = new Date(date);
+ validity.setFullYear(validity.getFullYear()+1);
+
  let vDay = String(validity.getDate()).padStart(2,'0');
  let vMonth = String(validity.getMonth()+1).padStart(2,'0');
  let vYear = validity.getFullYear();
 
- document.getElementById('cname').innerText=name;
- document.getElementById('cdept').innerText=dept;
- document.getElementById('ccode').innerText=code;
- document.getElementById('cdate').innerText=`${day}-${month}-${year}`;
- document.getElementById('cvalid').innerText=`${vDay}-${vMonth}-${vYear}`;
+ document.getElementById('cname').innerText = name;
+ document.getElementById('cdept').innerText = dept;
+ document.getElementById('ccode').innerText = code;
+ document.getElementById('cdate').innerText = `${day}-${month}-${year}`;
+ document.getElementById('cvalid').innerText = `${vDay}-${vMonth}-${vYear}`;
 
  if(capturedImage){
-  document.getElementById('cphoto').src = capturedImage;
+   document.getElementById('cphoto').src = capturedImage;
  }
 
- document.getElementById('cardSection').style.display='flex';
+ document.getElementById('cardSection').style.display = "flex";
 
  document.getElementById('qrcode').innerHTML="";
  new QRCode(document.getElementById('qrcode'), {
    text: name + " | " + code,
-   width: 80,
-   height: 80
+   width: 60,
+   height: 60
  });
 }
 
 function printCard(){
  window.print();
 }
+
 </script>
 
 </body>
