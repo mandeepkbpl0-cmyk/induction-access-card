@@ -11,7 +11,7 @@ body { font-family: Arial; background:#f0f0f0; }
 .card, .guidelines { background:#fff; border:1px solid #ccc; padding:15px; }
 .card { width:60%; }
 .guidelines { width:40%; }
-.header { display:flex; align-items:center; justify-content:center; gap:10px; background:#c00000; color:#fff; padding:10px; }
+.header { display:flex; align-items:center; justify-content:center; gap:10px; background:#6a0dad; color:#fff; padding:10px; }
 .header img { height:40px; }
 .details { display:grid; grid-template-columns:1fr 1fr; margin-top:10px; }
 .details div { margin:5px 0; }
@@ -115,7 +115,10 @@ function generateCard(){
  let month = String(d.getMonth()+1).padStart(2,'0');
  let year = d.getFullYear();
  document.getElementById('cdate').innerText = `${day}-${month}-${year}`;
- document.getElementById('cvalid').innerText=validity.toISOString().split('T')[0];
+ let vDay = String(validity.getDate()).padStart(2,'0');
+ let vMonth = String(validity.getMonth()+1).padStart(2,'0');
+ let vYear = validity.getFullYear();
+ document.getElementById('cvalid').innerText = `${vDay}-${vMonth}-${vYear}`;
 
  document.getElementById('cardSection').style.display='flex';
 
