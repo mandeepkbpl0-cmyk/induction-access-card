@@ -9,7 +9,7 @@
 body { font-family: Arial; background:#f0f0f0; }
 .container { width:950px; margin:20px auto; display:flex; gap:20px; }
 .card, .guidelines { background:#fff; border:1px solid #ccc; padding:15px; }
-.card { width:60%; }
+.card { width: 336px; height: 212px; margin:20px auto; border-radius:12px; overflow:hidden; box-shadow:0 4px 10px rgba(0,0,0,0.3); }
 .guidelines { width:40%; }
 .header { display:flex; align-items:center; justify-content:center; gap:10px; background:#6a0dad; color:#fff; padding:10px; }
 .header img { height:40px; }
@@ -27,6 +27,10 @@ canvas { display:none; }
 
 @media print {
  body { background:#fff; }
+ .container { width:100%; display:block; }
+ .guidelines { display:none; }
+ button, input, video { display:none; }
+ .card { width: 85.6mm;
  .container { width:100%; display:block; }
  .guidelines { page-break-after:always; }
  button, input, video { display:none; }
@@ -155,4 +159,14 @@ function generateCard(){
  new QRCode(document.getElementById('qrcode'), {
    text: name + " | " + code,
    width: 80,
-   heigh
+   height: 80
+ });
+}
+
+function printCard(){
+ window.print();
+}
+</script>
+
+</body>
+</html>
