@@ -22,13 +22,14 @@ body { font-family: Arial; background:#f0f0f0; }
 input { width:95%; margin:5px 0; padding:5px; }
 button { margin-top:10px; padding:8px 12px; cursor:pointer; }
 #qrcode { margin-top:10px; }
+video { width:150px; border:1px solid #000; }
+canvas { display:none; }
 
-/* PRINT FIX */
 @media print {
  body { background:#fff; }
  .container { width:100%; display:block; }
  .guidelines { page-break-after:always; }
- button, input { display:none; }
+ button, input, video { display:none; }
 }
 </style>
 </head>
@@ -36,7 +37,14 @@ button { margin-top:10px; padding:8px 12px; cursor:pointer; }
 
 <div style="text-align:center;">
 <h2>Induction Access Card System</h2>
-<input type="file" id="photo"><br>
+
+<!-- Camera Section -->
+<video id="video" autoplay></video><br>
+<button onclick="startCamera()">Start Camera</button>
+<button onclick="capturePhoto()">Capture Photo</button>
+<canvas id="canvas"></canvas>
+<br>
+
 <input type="text" id="name" placeholder="Name">
 <input type="text" id="dept" placeholder="Department">
 <input type="text" id="code" placeholder="Employee Code">
@@ -93,12 +101,27 @@ Induction Access Card
 </div>
 
 <script>
-function generateCard(){
- let file=document.getElementById('photo').files[0];
- let reader=new FileReader();
- reader.onload=function(e){document.getElementById('cphoto').src=e.target.result;}
- if(file) reader.readAsDataURL(file);
+let capturedImage = "";
 
+function startCamera(){
+ navigator.mediaDevices.getUserMedia({ video: true })
+ .then(stream => {
+   document.getElementById('video').srcObject = stream;
+ });
+}
+
+function capturePhoto(){
+ let video = document.getElementById('video');
+ let canvas = document.getElementById('canvas');
+ let context = canvas.getContext('2d');
+ canvas.width = video.videoWidth;
+ canvas.height = video.videoHeight;
+ context.drawImage(video, 0, 0);
+ capturedImage = canvas.toDataURL('image/png');
+ alert('Photo Captured');
+}
+
+function generateCard(){
  let name=document.getElementById('name').value;
  let dept=document.getElementById('dept').value;
  let code=document.getElementById('code').value;
@@ -107,18 +130,24 @@ function generateCard(){
  let validity=new Date(date);
  validity.setFullYear(validity.getFullYear()+1);
 
- document.getElementById('cname').innerText=name;
- document.getElementById('cdept').innerText=dept;
- document.getElementById('ccode').innerText=code;
  let d = new Date(date);
  let day = String(d.getDate()).padStart(2,'0');
  let month = String(d.getMonth()+1).padStart(2,'0');
  let year = d.getFullYear();
- document.getElementById('cdate').innerText = `${day}-${month}-${year}`;
+
  let vDay = String(validity.getDate()).padStart(2,'0');
  let vMonth = String(validity.getMonth()+1).padStart(2,'0');
  let vYear = validity.getFullYear();
- document.getElementById('cvalid').innerText = `${vDay}-${vMonth}-${vYear}`;
+
+ document.getElementById('cname').innerText=name;
+ document.getElementById('cdept').innerText=dept;
+ document.getElementById('ccode').innerText=code;
+ document.getElementById('cdate').innerText=`${day}-${month}-${year}`;
+ document.getElementById('cvalid').innerText=`${vDay}-${vMonth}-${vYear}`;
+
+ if(capturedImage){
+  document.getElementById('cphoto').src = capturedImage;
+ }
 
  document.getElementById('cardSection').style.display='flex';
 
@@ -126,14 +155,4 @@ function generateCard(){
  new QRCode(document.getElementById('qrcode'), {
    text: name + " | " + code,
    width: 80,
-   height: 80
- });
-}
-
-function printCard(){
- window.print();
-}
-</script>
-
-</body>
-</html>
+   heigh
