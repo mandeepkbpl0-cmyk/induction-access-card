@@ -30,7 +30,8 @@ canvas { display:none; }
  .container { width:100%; display:block; }
  .guidelines { display:none; }
  button, input, video { display:none; }
- .card { width: 85.6mm;
+ .card { width: 85.6mm; height: 54mm; }
+}
  .container { width:100%; display:block; }
  .guidelines { page-break-after:always; }
  button, input, video { display:none; }
@@ -118,12 +119,21 @@ function capturePhoto(){
  let video = document.getElementById('video');
  let canvas = document.getElementById('canvas');
  let context = canvas.getContext('2d');
+
  canvas.width = video.videoWidth;
  canvas.height = video.videoHeight;
  context.drawImage(video, 0, 0);
+
+ // Save image
  capturedImage = canvas.toDataURL('image/png');
- alert('Photo Captured');
-}
+
+ // Show captured image preview
+ document.getElementById('cphoto').src = capturedImage;
+
+ // Stop camera
+ let stream = video.srcObject;
+ if(stream){
+   let tracks
 
 function generateCard(){
  let name=document.getElementById('name').value;
