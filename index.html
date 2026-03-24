@@ -110,7 +110,11 @@ function generateCard(){
  document.getElementById('cname').innerText=name;
  document.getElementById('cdept').innerText=dept;
  document.getElementById('ccode').innerText=code;
- document.getElementById('cdate').innerText=date;
+ let d = new Date(date);
+ let day = String(d.getDate()).padStart(2,'0');
+ let month = String(d.getMonth()+1).padStart(2,'0');
+ let year = d.getFullYear();
+ document.getElementById('cdate').innerText = `${day}-${month}-${year}`;
  document.getElementById('cvalid').innerText=validity.toISOString().split('T')[0];
 
  document.getElementById('cardSection').style.display='flex';
