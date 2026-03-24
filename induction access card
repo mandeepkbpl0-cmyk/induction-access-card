@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Induction Access Card</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<style>
+body { font-family: Arial; background:#f0f0f0; }
+.container { width:950px; margin:20px auto; display:flex; gap:20px; }
+.card, .guidelines { background:#fff; border:1px solid #ccc; padding:15px; }
+.card { width:60%; }
+.guidelines { width:40%; }
+.header { text-align:center; font-weight:bold; background:#c00000; color:#fff; padding:10px; }
+.details { display:grid; grid-template-columns:1fr 1fr; margin-top:10px; }
+.details div { margin:5px 0; }
+.photo img { width:120px; height:120px; object-fit:cover; border:1px solid #000; }
+.sign { display:flex; justify-content:space-between; margin-top:20px; }
+.sign div { text-align:center; width:30%; }
+.line { border-top:1px solid #000; margin-top:30px; }
+input { width:95%; margin:5px 0; padding:5px; }
+button { margin-top:10px; padding:8px 12px; cursor:pointer; }
+#qrcode { margin-top:10px; }
+</style>
+</head>
+<body>
+
+<div style="text-align:center;">
+<h2>Induction Access Card System</h2>
+<input type="file" id="photo"><br>
+<input type="text" id="name" placeholder="Name">
+<input type="text" id="dept" placeholder="Department">
+<input type="text" id="code" placeholder="Employee Code">
+<input type="date" id="date">
+<br>
+<button onclick="generateCard()">Generate</button>
+<button onclick="saveData()">Save Data</button>
+<button onclick="downloadExcel()">Download Excel</button>
+<button onclick="printCard()">Print</button>
+</div>
+
+<div class="container" id="cardSection" style="display:none;">
+
+<div class="card" id="card">
+<div class="header" style="display:flex; align-items:center; justify-content:center; gap:10px;">
+<img id="logo" src="Campa_Cola_logo.png" style="height:40px;">
+<div>
+<h2 style="margin:0;">VEERKA BEVERAGE PRIVATE LIMITED</h2>
+<h3 style="margin:0;">Induction Access Card</h3>
+</div>
+</div>
+
+<div class="details">
+<div><b>Name:</b> <span id="cname"></span></div>
+<div class="photo"><img id="cphoto"></div>
+<div><b>Department:</b> <span id="cdept"></span></div>
+<div><b>Employee Code:</b> <span id="ccode"></span></div>
+<div><b>Induction Date:</b> <span id="cdate"></span></div>
+<div><b>Valid Till:</b> <span id="cvalid"></span></div>
+</div>
+
+<div id="qrcode"></div>
+
+<div class="sign">
+<div><div class="line"></div>Employee Sign</div>
+<div><div class="line"></div>Trainer Sign</div>
+<div><div class="line"></div>Safety Sign</div>
+</div>
+
+</div>
+
+<div class="guidelines">
+<h3>Safety and Security Guidelines</h3>
+<ol>
+<li>Follow all safety rules inside plant.</li>
+<li>Wear mandatory PPE at all times.</li>
+<li>Do not enter restricted areas.</li>
+<li>Report unsafe conditions immediately.</li>
+<li>Follow emergency evacuation procedure.</li>
+<li>Maintain cleanliness and hygiene.</li>
+<li>No smoking or spitting inside plant.</li>
+<li>Carry this card during duty hours.</li>
+</ol>
+</div>
+
+</div>
+
+<script>
+function generateCard(){
+ let file=document.getElementById('photo').files[0];
+ let reader=new FileReader();
+ reader.onload=function(e){document.getElementById('cphoto').src=e.target.result;}
+ if(file) reader.readAsDataURL(file);
+
+ let name=document.getElementById('name').value;
+ let dept=document.getElementById('dept').value;
+ let code=document.getElementById('code').value;
+ let date=document.getElementById('date').value;
+
+ let validity=new Date(date);
+ validity.setFullYear(validity.getFullYear()+1);
+
+ document.getElementById('cname').innerText=name;
+ document.getElementById('cdept').innerText=dept;
+ document.getElementById('ccode').innerText=code;
+ document.getElementById('cdate').innerText=date;
+ document.getElementById('cvalid').innerText=validity.toISOString().split('T')[0];
+
+ document.getElementById('cardSection').style.display='flex';
+
+ // QR Code
+ document.getElementById('qrcode').innerHTML="";
+ new QRCode(document.getElementById('qrcode'), {
+   text: name + " | " + code,
+   width: 80,
+   height: 80
+ });
+}
+
+function saveData(){
+ let data={
+  name:document.getElementById('name').value,
+  dept:document.getElementById('dept').value,
+  code:document.getElementById('code').value,
+  date:document.getElementById('date').value
+ };
+ let existing=JSON.parse(localStorage.getItem('employees')||'[]');
+ existing.push(data);
+ localStorage.setItem('employees',JSON.stringify(existing));
+ alert('Data Saved');
+}
+
+function downloadExcel(){
+ let data=JSON.parse(localStorage.getItem('employees')||'[]');
+ let csv="Name,Department,Code,Date\n";
+ data.forEach(e=>{
+  csv+=`${e.name},${e.dept},${e.code},${e.date}\n`;
+ });
+ let blob=new Blob([csv],{type:'text/csv'});
+ let a=document.createElement('a');
+ a.href=URL.createObjectURL(blob);
+ a.download='employees.csv';
+ a.click();
+}
+
+function printCard(){
+ let content=document.getElementById('cardSection').innerHTML;
+ let win=window.open('','','width=900,height=600');
+ win.document.write('<html><body>'+content+'</body></html>');
+ win.document.close();
+ win.print();
+}
+</script>
+
+</body>
+</html>
