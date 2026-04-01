@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Induction Access Card</title>
+<title>Employee Induction Card</title>
 
 <style>
 body { font-family: Arial; }
@@ -15,7 +15,7 @@ body { font-family: Arial; }
 }
 
 .card, .guidelines {
- border: 1px solid #ccc;
+ border: 1px solid #000;
  padding: 10px;
 }
 
@@ -72,16 +72,13 @@ button { padding: 6px 10px; margin: 5px; }
 
 <body>
 
-<h2 style="text-align:center;">Induction Access Card System</h2>
+<h2 style="text-align:center;">Employee Induction Card System</h2>
 
 <div style="text-align:center;">
-<input type="text" id="name" placeholder="Name">
-<input type="text" id="code" placeholder="Code">
+<input type="text" id="name" placeholder="Employee Name">
+<input type="text" id="code" placeholder="Employee Code">
 <input type="text" id="dept" placeholder="Department">
-<input type="text" id="contact" placeholder="Contact">
-<input type="text" id="meet" placeholder="Whom to Meet">
-<input type="text" id="purpose" placeholder="Purpose">
-<input type="text" id="area" placeholder="Area">
+<input type="text" id="trainer" placeholder="Trainer Name">
 <input type="date" id="date">
 
 <br>
@@ -100,48 +97,45 @@ button { padding: 6px 10px; margin: 5px; }
 
 <div class="header">
 <b>VEERKA BEVERAGE PRIVATE LIMITED</b><br>
-Induction Access Card
+Employee Induction Card
 </div>
 
 <div class="details">
 
-<div>A/C No: <span id="cno"></span></div>
+<div>Emp Code: <span id="ccode"></span></div>
 <div class="photo"><img id="cphoto"></div>
 
 <div>Name: <span id="cname"></span></div>
-<div>Date: <span id="cdate"></span></div>
+<div>Department: <span id="cdept"></span></div>
 
-<div>Ind Valid Date: <span id="cvalid"></span></div>
-<div>Dept: <span id="cdept"></span></div>
+<div>Trainer: <span id="ctrainer"></span></div>
+<div>Induction Date: <span id="cdate"></span></div>
 
-<div>Whom to Meet: <span id="cmeet"></span></div>
-<div>Purpose: <span id="cpurpose"></span></div>
-
-<div>Contact: <span id="ccontact"></span></div>
-<div>Area: <span id="carea"></span></div>
+<div>Valid Till: <span id="cvalid"></span></div>
 
 </div>
 
 <div class="sign">
-<div><div class="line"></div>Signature of Visitor</div>
-<div><div class="line"></div>Signature of Employee</div>
-<div><div class="line"></div>Signature of Security</div>
+<div><div class="line"></div>Employee Sign</div>
+<div><div class="line"></div>Trainer Sign</div>
+<div><div class="line"></div>HR/Safety Sign</div>
 </div>
 
 </div>
 
 <div class="guidelines">
 
-<h3>Safety and Security Guidelines</h3>
+<h3>Plant General Safety Guidelines</h3>
 
 <ol>
-<li>Please deposit all restricted material at security gate.</li>
-<li>Display access card inside plant.</li>
-<li>Do not enter restricted area.</li>
-<li>Follow emergency assembly point.</li>
-<li>Maintain hygiene.</li>
-<li>No spitting or smoking.</li>
-<li>Report abnormality to security.</li>
+<li>Always wear mandatory PPE inside plant.</li>
+<li>Follow all safety instructions and signage.</li>
+<li>No smoking or tobacco inside plant.</li>
+<li>Do not enter restricted areas without permission.</li>
+<li>Report unsafe acts/conditions immediately.</li>
+<li>Follow emergency evacuation procedures.</li>
+<li>Maintain good housekeeping and hygiene.</li>
+<li>Use proper tools and equipment safely.</li>
 </ol>
 
 </div>
@@ -155,29 +149,20 @@ function generate(){
 let name = document.getElementById('name').value;
 let code = document.getElementById('code').value;
 let dept = document.getElementById('dept').value;
-let contact = document.getElementById('contact').value;
-let meet = document.getElementById('meet').value;
-let purpose = document.getElementById('purpose').value;
-let area = document.getElementById('area').value;
+let trainer = document.getElementById('trainer').value;
 let date = document.getElementById('date').value;
 
 let d = new Date(date);
-let day = d.getDate();
-let month = d.getMonth()+1;
-let year = d.getFullYear();
 
 let valid = new Date(date);
 valid.setFullYear(valid.getFullYear()+1);
 
 document.getElementById('cname').innerText = name;
-document.getElementById('cno').innerText = code;
+document.getElementById('ccode').innerText = code;
 document.getElementById('cdept').innerText = dept;
-document.getElementById('ccontact').innerText = contact;
-document.getElementById('cmeet').innerText = meet;
-document.getElementById('cpurpose').innerText = purpose;
-document.getElementById('carea').innerText = area;
+document.getElementById('ctrainer').innerText = trainer;
 
-document.getElementById('cdate').innerText = `${day}-${month}-${year}`;
+document.getElementById('cdate').innerText = `${d.getDate()}-${d.getMonth()+1}-${d.getFullYear()}`;
 document.getElementById('cvalid').innerText = `${valid.getDate()}-${valid.getMonth()+1}-${valid.getFullYear()}`;
 
 let file = document.getElementById('photo').files[0];
