@@ -23,8 +23,8 @@ body { font-family: Arial; }
 .guidelines { width: 35%; }
 
 .header {
- text-align: center;
  font-weight: bold;
+ margin-bottom: 10px;
 }
 
 .details {
@@ -68,6 +68,11 @@ video {
  margin-top: 10px;
 }
 
+.header img {
+ height: 40px;
+ object-fit: contain;
+}
+
 @media print {
  input, button, video { display: none; }
 }
@@ -106,9 +111,13 @@ video {
 
 <div class="card">
 
-<div class="header">
+<!-- HEADER WITH LOGO -->
+<div class="header" style="display:flex; align-items:center; justify-content:center; gap:10px;">
+<img src="campa.png">
+<div>
 <b>VEERKA BEVERAGE PRIVATE LIMITED</b><br>
 Employee Induction Card
+</div>
 </div>
 
 <div class="details">
@@ -180,7 +189,7 @@ function capturePhoto(){
  let imageData = canvas.toDataURL('image/png');
  document.getElementById('cphoto').src = imageData;
 
- // Stop camera after capture
+ // Stop camera
  stream.getTracks().forEach(track => track.stop());
 }
 
