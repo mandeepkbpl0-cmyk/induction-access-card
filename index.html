@@ -9,75 +9,111 @@ body { font-family: Arial; }
 
 .container {
  display: flex;
- gap: 20px;
- width: 1000px;
- margin: auto;
-}
-
-.card, .guidelines {
- border: 1px solid #000;
- padding: 10px;
-}
-
-.card { width: 65%; }
-.guidelines { width: 35%; }
-
-.header {
- font-weight: bold;
- margin-bottom: 10px;
-}
-
-.details {
- display: grid;
- grid-template-columns: 1fr 1fr;
- margin-top: 10px;
-}
-
-.details div {
- margin: 5px 0;
-}
-
-.photo img {
- width: 120px;
- height: 120px;
- object-fit: cover;
- border: 1px solid #000;
-}
-
-.sign {
- display: flex;
- justify-content: space-between;
+ justify-content: center;
  margin-top: 20px;
 }
 
-.sign div {
- text-align: center;
- width: 30%;
+.print-area {
+ display: flex;
+ gap: 20px;
+ align-items: flex-start;
+}
+
+/* CARD SIZE */
+.card, .guidelines {
+ width: 320px;
+ height: 200px;
+ border: 1px solid #000;
+ padding: 10px;
+ box-sizing: border-box;
+}
+
+/* HEADER */
+.header {
+ display: flex;
+ align-items: center;
+ justify-content: center;
+ gap: 8px;
+ font-size: 12px;
+ font-weight: bold;
+}
+
+.header img {
+ height: 30px;
+}
+
+/* DETAILS */
+.details {
+ display: grid;
+ grid-template-columns: 1fr 1fr;
+ font-size: 11px;
+ margin-top: 5px;
+}
+
+.photo img {
+ width: 70px;
+ height: 70px;
+ border: 1px solid #000;
+}
+
+/* SIGN */
+.sign {
+ display: flex;
+ justify-content: space-between;
+ font-size: 10px;
+ margin-top: 10px;
 }
 
 .line {
  border-top: 1px solid #000;
- margin-top: 30px;
+ margin-top: 15px;
 }
 
-input { margin: 5px; padding: 5px; }
-button { padding: 6px 10px; margin: 5px; }
+/* GUIDELINES */
+.guidelines {
+ font-size: 11px;
+}
+
+.guidelines h4 {
+ margin: 0;
+ text-align: center;
+}
+
+.guidelines ol {
+ padding-left: 15px;
+ margin-top: 5px;
+}
+
+/* INPUT UI */
+input, button {
+ margin: 5px;
+ padding: 5px;
+}
 
 video {
  border: 1px solid #000;
- margin-top: 10px;
 }
 
-.header img {
- height: 40px;
- object-fit: contain;
-}
-
+/* PRINT SETTINGS */
 @media print {
- input, button, video { display: none; }
+ body { margin: 0; }
+
+ input, button, video, h2 {
+   display: none;
+ }
+
+ .container {
+   margin-top: 10px;
+   justify-content: flex-start;
+ }
+
+ .print-area {
+   position: absolute;
+   top: 20px;
+   left: 20px;
+ }
 }
 </style>
-
 </head>
 
 <body>
@@ -93,80 +129,77 @@ video {
 
 <br>
 
-<video id="camera" width="200" height="150" autoplay></video>
-<br>
+<video id="camera" width="200" height="150" autoplay></video><br>
 <button onclick="startCamera()">Start Camera</button>
 <button onclick="capturePhoto()">Capture</button>
 
 <canvas id="canvas" style="display:none;"></canvas>
 
 <br>
-<button onclick="generate()">Generate Card</button>
+<button onclick="generate()">Generate</button>
 <button onclick="printCard()">Print</button>
 </div>
 
-<br>
-
 <div class="container" id="cardSection" style="display:none;">
 
+<div class="print-area">
+
+<!-- FRONT SIDE -->
 <div class="card">
 
-<!-- HEADER WITH LOGO -->
-<div class="header" style="display:flex; align-items:center; justify-content:center; gap:10px;">
+<div class="header">
 <img src="campa.png">
 <div>
-<b>VEERKA BEVERAGE PRIVATE LIMITED</b><br>
-Employee Induction Card
+VEERKA BEVERAGE<br>
+Induction Card
 </div>
 </div>
 
 <div class="details">
-
-<div>Emp Code: <span id="ccode"></span></div>
+<div>Code: <span id="ccode"></span></div>
 <div class="photo"><img id="cphoto"></div>
 
 <div>Name: <span id="cname"></span></div>
-<div>Department: <span id="cdept"></span></div>
+<div>Dept: <span id="cdept"></span></div>
 
 <div>Trainer: <span id="ctrainer"></span></div>
-<div>Induction Date: <span id="cdate"></span></div>
+<div>Date: <span id="cdate"></span></div>
 
-<div>Valid Till: <span id="cvalid"></span></div>
-
+<div>Valid: <span id="cvalid"></span></div>
 </div>
 
 <div class="sign">
-<div><div class="line"></div>Employee Sign</div>
-<div><div class="line"></div>Trainer Sign</div>
-<div><div class="line"></div>HR/Safety Sign</div>
+<div><div class="line"></div>Employee</div>
+<div><div class="line"></div>Trainer</div>
+<div><div class="line"></div>Safety</div>
 </div>
 
 </div>
 
+<!-- BACK SIDE -->
 <div class="guidelines">
 
-<h3>Plant General Safety Guidelines</h3>
+<h4>Safety and Security Guidelines</h4>
 
 <ol>
-<li>Always wear mandatory PPE inside plant.</li>
-<li>Follow all safety instructions and signage.</li>
-<li>No smoking or tobacco inside plant.</li>
-<li>Do not enter restricted areas without permission.</li>
-<li>Report unsafe acts/conditions immediately.</li>
-<li>Follow emergency evacuation procedures.</li>
-<li>Maintain good housekeeping and hygiene.</li>
-<li>Use proper tools and equipment safely.</li>
+<li>Please deposit all restricted material at security gate.</li>
+<li>Display access card inside plant.</li>
+<li>Do not enter restricted area.</li>
+<li>Follow emergency assembly point.</li>
+<li>Maintain hygiene.</li>
+<li>No spitting or smoking.</li>
+<li>Report abnormality to security.</li>
 </ol>
 
 </div>
 
+</div>
 </div>
 
 <script>
 
 let stream;
 
-// Start Camera
 function startCamera(){
  navigator.mediaDevices.getUserMedia({ video: true })
  .then(function(s){
@@ -175,50 +208,40 @@ function startCamera(){
  });
 }
 
-// Capture Photo
 function capturePhoto(){
  let video = document.getElementById('camera');
  let canvas = document.getElementById('canvas');
- let context = canvas.getContext('2d');
+ let ctx = canvas.getContext('2d');
 
  canvas.width = video.videoWidth;
  canvas.height = video.videoHeight;
 
- context.drawImage(video, 0, 0, canvas.width, canvas.height);
+ ctx.drawImage(video, 0, 0);
 
- let imageData = canvas.toDataURL('image/png');
- document.getElementById('cphoto').src = imageData;
+ document.getElementById('cphoto').src = canvas.toDataURL();
 
- // Stop camera
  stream.getTracks().forEach(track => track.stop());
 }
 
-// Generate Card
 function generate(){
+ let d = new Date(document.getElementById('date').value);
+ let valid = new Date(d);
+ valid.setFullYear(valid.getFullYear()+1);
 
-let name = document.getElementById('name').value;
-let code = document.getElementById('code').value;
-let dept = document.getElementById('dept').value;
-let trainer = document.getElementById('trainer').value;
-let date = document.getElementById('date').value;
+ document.getElementById('cname').innerText = name.value;
+ document.getElementById('ccode').innerText = code.value;
+ document.getElementById('cdept').innerText = dept.value;
+ document.getElementById('ctrainer').innerText = trainer.value;
 
-let d = new Date(date);
+ document.getElementById('cdate').innerText =
+ `${d.getDate()}-${d.getMonth()+1}-${d.getFullYear()}`;
 
-let valid = new Date(date);
-valid.setFullYear(valid.getFullYear()+1);
+ document.getElementById('cvalid').innerText =
+ `${valid.getDate()}-${valid.getMonth()+1}-${valid.getFullYear()}`;
 
-document.getElementById('cname').innerText = name;
-document.getElementById('ccode').innerText = code;
-document.getElementById('cdept').innerText = dept;
-document.getElementById('ctrainer').innerText = trainer;
-
-document.getElementById('cdate').innerText = `${d.getDate()}-${d.getMonth()+1}-${d.getFullYear()}`;
-document.getElementById('cvalid').innerText = `${valid.getDate()}-${valid.getMonth()+1}-${valid.getFullYear()}`;
-
-document.getElementById('cardSection').style.display = "flex";
+ document.getElementById('cardSection').style.display = "block";
 }
 
-// Print
 function printCard(){
  window.print();
 }
