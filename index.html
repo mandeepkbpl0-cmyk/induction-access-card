@@ -16,10 +16,9 @@ body { font-family: Arial; }
 .print-area {
  display: flex;
  gap: 20px;
- align-items: flex-start;
 }
 
-/* CARD SIZE */
+/* CARD */
 .card, .guidelines {
  width: 320px;
  height: 200px;
@@ -32,9 +31,8 @@ body { font-family: Arial; }
 .header {
  display: flex;
  align-items: center;
- justify-content: center;
  gap: 8px;
- font-size: 12px;
+ font-size: 11px;
  font-weight: bold;
 }
 
@@ -79,12 +77,7 @@ body { font-family: Arial; }
  text-align: center;
 }
 
-.guidelines ol {
- padding-left: 15px;
- margin-top: 5px;
-}
-
-/* INPUT UI */
+/* INPUT */
 input, button {
  margin: 5px;
  padding: 5px;
@@ -94,17 +87,10 @@ video {
  border: 1px solid #000;
 }
 
-/* PRINT SETTINGS */
+/* PRINT */
 @media print {
- body { margin: 0; }
-
  input, button, video, h2 {
    display: none;
- }
-
- .container {
-   margin-top: 10px;
-   justify-content: flex-start;
  }
 
  .print-area {
@@ -118,7 +104,7 @@ video {
 
 <body>
 
-<h2 style="text-align:center;">Employee Induction Card System</h2>
+<h2 style="text-align:center;">Employee Induction Card</h2>
 
 <div style="text-align:center;">
 <input type="text" id="name" placeholder="Employee Name">
@@ -144,13 +130,13 @@ video {
 
 <div class="print-area">
 
-<!-- FRONT SIDE -->
+<!-- FRONT -->
 <div class="card">
 
 <div class="header">
-<img src="campa.png">
+<img src="campa.png" onerror="this.style.display='none'">
 <div>
-VEERKA BEVERAGE<br>
+VEERKA BEVERAGE PRIVATE LIMITED<br>
 Induction Card
 </div>
 </div>
@@ -171,12 +157,11 @@ Induction Card
 <div class="sign">
 <div><div class="line"></div>Employee</div>
 <div><div class="line"></div>Trainer</div>
-<div><div class="line"></div>Safety</div>
 </div>
 
 </div>
 
-<!-- BACK SIDE -->
+<!-- BACK -->
 <div class="guidelines">
 
 <h4>Safety and Security Guidelines</h4>
@@ -200,6 +185,7 @@ Induction Card
 
 let stream;
 
+// CAMERA
 function startCamera(){
  navigator.mediaDevices.getUserMedia({ video: true })
  .then(function(s){
@@ -223,25 +209,35 @@ function capturePhoto(){
  stream.getTracks().forEach(track => track.stop());
 }
 
+// GENERATE FIXED
 function generate(){
- let d = new Date(document.getElementById('date').value);
- let valid = new Date(d);
- valid.setFullYear(valid.getFullYear()+1);
 
- document.getElementById('cname').innerText = name.value;
- document.getElementById('ccode').innerText = code.value;
- document.getElementById('cdept').innerText = dept.value;
- document.getElementById('ctrainer').innerText = trainer.value;
+let nameVal = document.getElementById('name').value;
+let codeVal = document.getElementById('code').value;
+let deptVal = document.getElementById('dept').value;
+let trainerVal = document.getElementById('trainer').value;
+let dateVal = document.getElementById('date').value;
 
- document.getElementById('cdate').innerText =
+let d = new Date(dateVal);
+let valid = new Date(dateVal);
+valid.setFullYear(valid.getFullYear()+1);
+
+// FIX: proper variable use
+document.getElementById('cname').innerText = nameVal || "-";
+document.getElementById('ccode').innerText = codeVal || "-";
+document.getElementById('cdept').innerText = deptVal || "-";
+document.getElementById('ctrainer').innerText = trainerVal || "-";
+
+document.getElementById('cdate').innerText =
  `${d.getDate()}-${d.getMonth()+1}-${d.getFullYear()}`;
 
- document.getElementById('cvalid').innerText =
+document.getElementById('cvalid').innerText =
  `${valid.getDate()}-${valid.getMonth()+1}-${valid.getFullYear()}`;
 
- document.getElementById('cardSection').style.display = "block";
+document.getElementById('cardSection').style.display = "block";
 }
 
+// PRINT
 function printCard(){
  window.print();
 }
