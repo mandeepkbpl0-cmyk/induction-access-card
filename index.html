@@ -21,7 +21,7 @@ body { font-family: Arial; }
 /* CARD */
 .card, .guidelines {
  width: 320px;
- height: 200px;
+ height: 220px;
  border: 1px solid #000;
  padding: 10px;
  box-sizing: border-box;
@@ -69,12 +69,17 @@ body { font-family: Arial; }
 
 /* GUIDELINES */
 .guidelines {
- font-size: 11px;
+ font-size: 10.5px;
 }
 
 .guidelines h4 {
  margin: 0;
  text-align: center;
+}
+
+.guidelines ol {
+ padding-left: 15px;
+ margin-top: 5px;
 }
 
 /* INPUT */
@@ -164,16 +169,21 @@ Induction Card
 <!-- BACK -->
 <div class="guidelines">
 
-<h4>Safety and Security Guidelines</h4>
+<h4>Plant General Safety Guidelines</h4>
 
 <ol>
-<li>Please deposit all restricted material at security gate.</li>
-<li>Display access card inside plant.</li>
-<li>Do not enter restricted area.</li>
-<li>Follow emergency assembly point.</li>
-<li>Maintain hygiene.</li>
-<li>No spitting or smoking.</li>
-<li>Report abnormality to security.</li>
+<li>Always wear mandatory PPE (Helmet, Safety Shoes, Ear Plugs, etc.) inside plant.</li>
+<li>Follow all safety instructions, signages and SOPs.</li>
+<li>Do not operate any machine without proper training and authorization.</li>
+<li>Report all unsafe acts, unsafe conditions and near misses immediately.</li>
+<li>Maintain proper housekeeping at workplace.</li>
+<li>Do not enter restricted or hazardous areas without permission.</li>
+<li>Follow Lockout-Tagout (LOTO) procedure before maintenance work.</li>
+<li>No smoking, alcohol or tobacco inside plant premises.</li>
+<li>Use correct tools and equipment for the job.</li>
+<li>Follow emergency procedures and assembly point instructions.</li>
+<li>Immediately report any injury or incident to supervisor.</li>
+<li>Always follow work permit system (Hot work, Height work, Confined space etc.).</li>
 </ol>
 
 </div>
@@ -209,7 +219,7 @@ function capturePhoto(){
  stream.getTracks().forEach(track => track.stop());
 }
 
-// GENERATE FIXED
+// GENERATE
 function generate(){
 
 let nameVal = document.getElementById('name').value;
@@ -222,7 +232,6 @@ let d = new Date(dateVal);
 let valid = new Date(dateVal);
 valid.setFullYear(valid.getFullYear()+1);
 
-// FIX: proper variable use
 document.getElementById('cname').innerText = nameVal || "-";
 document.getElementById('ccode').innerText = codeVal || "-";
 document.getElementById('cdept').innerText = deptVal || "-";
