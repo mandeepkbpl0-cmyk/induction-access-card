@@ -63,8 +63,13 @@ body { font-family: Arial; }
 input { margin: 5px; padding: 5px; }
 button { padding: 6px 10px; margin: 5px; }
 
+video {
+ border: 1px solid #000;
+ margin-top: 10px;
+}
+
 @media print {
- input, button { display: none; }
+ input, button, video { display: none; }
 }
 </style>
 
@@ -82,10 +87,16 @@ button { padding: 6px 10px; margin: 5px; }
 <input type="date" id="date">
 
 <br>
-<input type="file" id="photo">
+
+<video id="camera" width="200" height="150" autoplay></video>
+<br>
+<button onclick="startCamera()">Start Camera</button>
+<button onclick="capturePhoto()">Capture</button>
+
+<canvas id="canvas" style="display:none;"></canvas>
 
 <br>
-<button onclick="generate()">Generate</button>
+<button onclick="generate()">Generate Card</button>
 <button onclick="printCard()">Print</button>
 </div>
 
@@ -144,6 +155,36 @@ Employee Induction Card
 
 <script>
 
+let stream;
+
+// Start Camera
+function startCamera(){
+ navigator.mediaDevices.getUserMedia({ video: true })
+ .then(function(s){
+   stream = s;
+   document.getElementById('camera').srcObject = stream;
+ });
+}
+
+// Capture Photo
+function capturePhoto(){
+ let video = document.getElementById('camera');
+ let canvas = document.getElementById('canvas');
+ let context = canvas.getContext('2d');
+
+ canvas.width = video.videoWidth;
+ canvas.height = video.videoHeight;
+
+ context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+ let imageData = canvas.toDataURL('image/png');
+ document.getElementById('cphoto').src = imageData;
+
+ // Stop camera after capture
+ stream.getTracks().forEach(track => track.stop());
+}
+
+// Generate Card
 function generate(){
 
 let name = document.getElementById('name').value;
@@ -165,18 +206,10 @@ document.getElementById('ctrainer').innerText = trainer;
 document.getElementById('cdate').innerText = `${d.getDate()}-${d.getMonth()+1}-${d.getFullYear()}`;
 document.getElementById('cvalid').innerText = `${valid.getDate()}-${valid.getMonth()+1}-${valid.getFullYear()}`;
 
-let file = document.getElementById('photo').files[0];
-let reader = new FileReader();
-
-reader.onload = function(e){
- document.getElementById('cphoto').src = e.target.result;
-}
-
-if(file) reader.readAsDataURL(file);
-
 document.getElementById('cardSection').style.display = "flex";
 }
 
+// Print
 function printCard(){
  window.print();
 }
